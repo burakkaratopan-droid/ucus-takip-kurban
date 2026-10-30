@@ -1,0 +1,48 @@
+{
+  "origin": "IST",
+  "destinations": [
+    {
+      "code": "HND",
+      "name": "Tokyo Haneda"
+    },
+    {
+      "code": "NRT",
+      "name": "Tokyo Narita"
+    },
+    {
+      "code": "KIX",
+      "name": "Osaka Kansai"
+    },
+    {
+      "code": "HND-NRT",
+      "name": "Haneda gidiş, Narita dönüş"
+    },
+    {
+      "code": "HND-KIX",
+      "name": "Haneda gidiş, Kansai dönüş"
+    },
+    {
+      "code": "NRT-KIX",
+      "name": "Narita gidiş, Kansai dönüş"
+    },
+    {
+      "code": "NRT-HND",
+      "name": "Narita gidiş, Haneda dönüş"
+    }
+  ],
+  "currency": "TRY",
+  "adults": 1,
+  "max_connecting_hours": 18,
+  "min_days": 10,
+  "max_days": 15,
+  "connecting_threshold": 40000,
+  "holidays": [
+    {
+      "id": "kurban-2027",
+      "name": "Kurban Bayramı 2027",
+      "first_day": "2027-05-15",
+      "last_day": "2027-05-19",
+      "note": "Arife 15 Mayıs, bayram 16-19 Mayıs"
+    }
+  ]
+}

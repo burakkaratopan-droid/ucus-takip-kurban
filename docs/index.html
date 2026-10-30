@@ -1,0 +1,469 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Japonya Kurban Uçuşları</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path fill='%23d9480f' d='M21 16v-2l-8-5V3.5a1.5 1.5 0 0 0-3 0V9l-8 5v2l8-2.5V19l-2 1.5V22l3.5-1 3.5 1v-1.5L13 19v-5.5z'/></svg>">
+<style>
+:root{
+  --bg:#f7f6f3;--card:#ffffff;--ink:#1c1b19;--ink2:#5c5a55;--ink3:#8d8a83;--line:#e4e1da;
+  --accent:#d9480f;--accent-bg:#fdebe2;--good:#1f8a5b;--good-bg:#e3f4ec;--bad:#c2372f;--bad-bg:#fbe6e4;
+  --direct:#2f5fb3;--conn:#c47a12;
+  --h0:#1f8a5b;--h1:#7cb342;--h2:#e0b22c;--h3:#e8772e;--h4:#c2372f;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#141413;--card:#1e1d1b;--ink:#f0eee8;--ink2:#b3b0a8;--ink3:#837f77;--line:#33312d;
+  --accent:#ff7a3d;--accent-bg:#3a2216;--good:#4cc28a;--good-bg:#173226;--bad:#f0706a;--bad-bg:#3b1c1a;
+  --direct:#7da6f0;--conn:#e8a640;
+}}
+:root[data-theme="dark"]{
+  --bg:#141413;--card:#1e1d1b;--ink:#f0eee8;--ink2:#b3b0a8;--ink3:#837f77;--line:#33312d;
+  --accent:#ff7a3d;--accent-bg:#3a2216;--good:#4cc28a;--good-bg:#173226;--bad:#f0706a;--bad-bg:#3b1c1a;
+  --direct:#7da6f0;--conn:#e8a640;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;-webkit-font-smoothing:antialiased}
+.wrap{max-width:1080px;margin:0 auto;padding:24px 16px 64px}
+header{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-end;gap:8px 24px;margin-bottom:20px}
+h1{font-size:24px;margin:0;letter-spacing:-.01em}
+h1 small{display:block;font-size:14px;font-weight:400;color:var(--ink2);margin-top:2px}
+.meta{font-size:13px;color:var(--ink3);text-align:right}
+.meta b{color:var(--ink2);font-weight:500}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin-bottom:24px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px}
+.card .lbl{font-size:13px;color:var(--ink2);display:flex;align-items:center;gap:6px}
+.card .val{font-size:26px;font-weight:600;letter-spacing:-.02em;margin:4px 0 2px;font-variant-numeric:tabular-nums}
+.card .sub{font-size:13px;color:var(--ink3)}
+.dot{width:8px;height:8px;border-radius:50%;display:inline-block}
+.controls{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:12px}
+.seg{display:inline-flex;background:var(--card);border:1px solid var(--line);border-radius:8px;padding:2px}
+.seg button{border:0;background:none;color:var(--ink2);font:inherit;font-size:13px;padding:5px 12px;border-radius:6px;cursor:pointer}
+.seg button[aria-pressed="true"]{background:var(--ink);color:var(--bg)}
+.spacer{flex:1}
+section{margin-bottom:28px}
+h2{font-size:16px;margin:0 0 4px}
+.hint{font-size:13px;color:var(--ink3);margin:0 0 12px}
+.heat{display:grid;gap:16px;grid-template-columns:repeat(auto-fit,minmax(320px,1fr))}
+.heat .card{padding:14px;overflow-x:auto}
+.heat table{border-collapse:separate;border-spacing:3px;width:100%;font-size:12px;font-variant-numeric:tabular-nums}
+.heat th{font-weight:500;color:var(--ink3);padding:2px 4px;text-align:center;white-space:nowrap}
+.heat th.row{text-align:right}
+.heat td{text-align:center;border-radius:5px;padding:6px 2px;cursor:pointer;color:#fff;font-weight:500;min-width:42px}
+.heat td.empty{background:transparent;cursor:default}
+.heat td.na{background:var(--line);color:var(--ink3)}
+.heat td.old{opacity:.45}
+.heat .sm{display:none}
+.heat td:hover{outline:2px solid var(--ink)}
+.legend{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--ink3);margin-top:8px}
+.legend i{display:block;width:120px;height:8px;border-radius:4px;background:linear-gradient(90deg,var(--h0),var(--h1),var(--h2),var(--h3),var(--h4))}
+.list{background:var(--card);border:1px solid var(--line);border-radius:12px;overflow:hidden}
+.row{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(0,1fr) minmax(0,1.5fr) 72px;gap:12px;align-items:center;padding:10px 16px;border-top:1px solid var(--line);cursor:pointer;font-variant-numeric:tabular-nums}
+.row:first-child{border-top:0}
+.row.head{cursor:default;font-size:12px;color:var(--ink3);background:var(--bg)}
+.row.head button{all:unset;cursor:pointer;color:inherit}
+.row.head button:hover,.row.head button.on{color:var(--ink)}
+.filters{display:flex;flex-wrap:wrap;gap:10px 12px;align-items:flex-end;margin-bottom:12px}
+.filters label{display:flex;flex-direction:column;gap:4px;font-size:12px;color:var(--ink2)}
+.filters select,.filters input{font:inherit;font-size:14px;color:var(--ink);background:var(--card);border:1px solid var(--line);border-radius:8px;padding:6px 10px;height:36px}
+.filters input{width:130px}
+.filters input:focus,.filters select:focus{outline:2px solid var(--accent);outline-offset:-1px}
+.filters .reset{border:1px solid var(--line);background:none;color:var(--ink2);font:inherit;font-size:13px;border-radius:8px;padding:0 12px;height:36px;cursor:pointer}
+.filters .reset:hover{background:var(--card);color:var(--ink)}
+.row:not(.head):hover{background:var(--bg)}
+.row.sel{background:var(--accent-bg)}
+.d1{font-weight:500}
+.d2{font-size:12px;color:var(--ink3)}
+.price{font-weight:600}
+.chg{font-size:12px;margin-left:4px}
+.up{color:var(--bad)}.down{color:var(--good)}
+.tag{display:inline-block;font-size:11px;padding:1px 6px;border-radius:4px;background:var(--good-bg);color:var(--good);font-weight:500;margin-left:4px}
+.tag.old{background:var(--line);color:var(--ink2)}
+.tag.low{background:var(--accent-bg);color:var(--accent)}
+.more{display:block;width:100%;border:0;border-top:1px solid var(--line);background:none;color:var(--ink2);font:inherit;font-size:13px;padding:10px;cursor:pointer}
+.more:hover{background:var(--bg)}
+#detail{display:none}
+#detail.on{display:block}
+.det-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:12px;margin-top:12px}
+.opt{border:1px solid var(--line);border-radius:10px;padding:10px 12px;margin-top:8px;font-size:13px}
+.opt .top{display:flex;justify-content:space-between;gap:8px;font-weight:500}
+.opt .legs{color:var(--ink2);margin-top:2px}
+a{color:var(--accent)}
+.links{display:flex;gap:16px;flex-wrap:wrap;font-size:13px;margin-top:12px}
+svg text{fill:var(--ink3);font-size:11px}
+.close{float:right;border:1px solid var(--line);background:var(--card);color:var(--ink2);border-radius:8px;padding:4px 10px;font:inherit;font-size:13px;cursor:pointer}
+.empty-state{padding:40px 16px;text-align:center;color:var(--ink2)}
+footer{font-size:12px;color:var(--ink3);margin-top:32px;line-height:1.6}
+@media (max-width:640px){
+  .row{grid-template-columns:minmax(0,1.2fr) minmax(0,1fr) minmax(0,1fr);padding:10px 12px}
+  .row .spark{display:none}
+  .heat .lg{display:none}.heat .sm{display:inline}
+  .heat .card{padding:10px}
+  .heat table{border-spacing:2px;font-size:11px}
+  .heat td{min-width:0;padding:5px 0}
+  .heat th{padding:2px 1px}
+  .meta{text-align:left}
+  .card .val{font-size:22px}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>İstanbul ⇄ Japonya · Kurban<small id="sub">Tokyo Haneda, Tokyo Narita, Osaka Kansai · bayramları kapsayan 10–15 günlük gidiş-dönüşler · tek kişi, ekonomi</small></h1>
+    <div class="meta" id="meta">Yükleniyor…</div>
+  </header>
+
+  <div class="cards" id="cards"></div>
+
+  <div class="controls">
+    <div class="seg" id="f-dest" role="group" aria-label="Havalimanı"></div>
+    <div class="seg" id="f-holiday" role="group" aria-label="Bayram"></div>
+    <div class="seg" id="f-kind" role="group" aria-label="Uçuş tipi">
+      <button data-v="direct" aria-pressed="true">Aktarmasız</button>
+      <button data-v="conn" aria-pressed="false">Tek aktarmalı</button>
+    </div>
+    <span class="spacer"></span>
+    <div class="seg" id="f-theme" role="group" aria-label="Tema">
+      <button data-v="auto" aria-pressed="true">Oto</button>
+      <button data-v="light" aria-pressed="false">Açık</button>
+      <button data-v="dark" aria-pressed="false">Koyu</button>
+    </div>
+  </div>
+
+  <section id="detail" class="card"></section>
+
+  <section>
+    <h2>Fiyat haritası</h2>
+    <p class="hint">Satırlar gidiş tarihi, sütunlar kaç günlük olduğu. Yeşil ucuz, kırmızı pahalı. "Tümü" seçiliyken her kutu o tarih için en ucuz havalimanını gösterir. Bir kutuya tıklayınca ayrıntısı açılır.</p>
+    <div class="heat" id="heat"></div>
+    <div class="legend"><span>ucuz</span><i></i><span>pahalı</span></div>
+  </section>
+
+  <section>
+    <h2>Tüm kombinasyonlar</h2>
+    <p class="hint" id="list-hint"></p>
+    <div class="filters">
+      <label>Sırala
+        <select id="f-sort">
+          <option value="d-asc">Aktarmasız: ucuzdan pahalıya</option>
+          <option value="d-desc">Aktarmasız: pahalıdan ucuza</option>
+          <option value="c-asc">Aktarmalı: ucuzdan pahalıya</option>
+          <option value="c-desc">Aktarmalı: pahalıdan ucuza</option>
+          <option value="date">Gidiş tarihine göre</option>
+          <option value="days">Gün sayısına göre (kısa → uzun)</option>
+        </select></label>
+      <label>Aktarmasız en fazla (TL)
+        <input id="f-maxd" type="number" inputmode="numeric" min="0" step="1000" placeholder="Sınır yok"></label>
+      <label>Aktarmalı en fazla (TL)
+        <input id="f-maxc" type="number" inputmode="numeric" min="0" step="1000" placeholder="Sınır yok"></label>
+      <label>Bayram
+        <select id="f-hol"></select></label>
+      <label>Gün
+        <select id="f-days"><option value="">Tümü</option></select></label>
+      <button class="reset" id="f-reset" type="button">Temizle</button>
+    </div>
+    <div class="list" id="list"></div>
+  </section>
+
+  <footer>
+    Fiyatlar Google Flights'tan günde üç kez otomatik çekilir ve gidiş-dönüş toplam, tek yetişkin içindir. Aktarmalılarda sadece gidişi 18 saatin altında olan uçuşlar gösterilir; en ucuz 25 aktarmalı tarihte aynı havayolunun dönüşünün de 18 saatin altında olduğu ayrıca kontrol edilir. Soluk görünen fiyatlar son taramada gelmeyen, son bilinen fiyatlardır. Satın almadan önce fiyatı havayolu sitesinde doğrulayın.<br>
+    Bayram tarihleri Diyanet takvimine göredir. Kombinasyonlar arife dahil tüm bayram günlerini kapsar.
+  </footer>
+</div>
+
+<script>
+const TL = n => n == null ? "—" : n.toLocaleString("tr-TR") + " TL";
+const MONTHS = ["Oca","Şub","Mar","Nis","May","Haz","Tem","Ağu","Eyl","Eki","Kas","Ara"];
+const DAYS = ["Paz","Pzt","Sal","Çar","Per","Cum","Cmt"];
+const d = s => new Date(s + "T00:00:00");
+const fmtD = s => { const x = d(s); return x.getDate() + " " + MONTHS[x.getMonth()]; };
+const fmtDw = s => { const x = d(s); return x.getDate() + " " + MONTHS[x.getMonth()] + " " + DAYS[x.getDay()]; };
+const ago = iso => {
+  const m = Math.round((Date.now() - new Date(iso)) / 60000);
+  if (m < 60) return m + " dk önce";
+  if (m < 1440) return Math.round(m / 60) + " saat önce";
+  return Math.round(m / 1440) + " gün önce";
+};
+const store = { get(k){ try { return localStorage.getItem("kurban-" + k); } catch { return null; } }, set(k,v){ try { localStorage.setItem("kurban-" + k,v); } catch {} } };
+
+let DATA, state = { dest: "all", holiday: "all", kind: "direct", selected: null, showAll: false };
+const destOf = c => c.dest || "HND";
+const destName = code => ((DATA.config.destinations || []).find(x => x.code === code) || { name: code }).name;
+let LIST = { sort: "d-asc", maxd: "", maxc: "", days: "" };
+try { Object.assign(LIST, JSON.parse(store.get("list") || "{}")); } catch {}
+
+function applyTheme(v){
+  if (v === "auto") document.documentElement.removeAttribute("data-theme");
+  else document.documentElement.setAttribute("data-theme", v);
+  document.querySelectorAll("#f-theme button").forEach(b => b.setAttribute("aria-pressed", b.dataset.v === v));
+}
+applyTheme(store.get("theme") || "auto");
+document.getElementById("f-theme").onclick = e => { const v = e.target.dataset.v; if (!v) return; store.set("theme", v); applyTheme(v); };
+
+const priceOf = (c, kind) => kind === "direct" ? (c.direct && c.direct.price) : (c.connecting && c.connecting[0] && c.connecting[0].price);
+const col = kind => kind === "direct" ? 1 : 2;
+
+function change(c, kind){
+  // Son iki farklı değer arasındaki fark
+  const h = c.history.filter(p => p[col(kind)] != null);
+  if (h.length < 2) return null;
+  const a = h[h.length - 2][col(kind)], b = h[h.length - 1][col(kind)];
+  if (a === b) return null;
+  return { diff: b - a, at: DATA.runs[h[h.length - 1][0]] };
+}
+const isStale = (c, kind) => !!(c.stale && c.stale[kind === "direct" ? "direct" : "connecting"]);
+function lowOf(c, kind){
+  const vals = c.history.map(p => p[col(kind)]).filter(v => v != null);
+  return vals.length ? { low: Math.min(...vals), distinct: new Set(vals).size } : null;
+}
+function badges(c, kind){
+  let out = "";
+  if (isStale(c, kind)) out += `<span class="tag old" title="Son taramada Google sonuç döndürmedi; son bilinen fiyat gösteriliyor">eski</span>`;
+  const l = lowOf(c, kind), p = priceOf(c, kind);
+  if (l && l.distinct > 1 && p === l.low) out += `<span class="tag low" title="Takip başladığından beri görülen en düşük fiyat">en düşük</span>`;
+  return out;
+}
+function chgHtml(ch){
+  if (!ch) return "";
+  const cls = ch.diff < 0 ? "down" : "up";
+  return `<span class="chg ${cls}" title="${ago(ch.at)}">${ch.diff < 0 ? "↓" : "↑"} ${Math.abs(ch.diff).toLocaleString("tr-TR")}</span>`;
+}
+
+function combos(){
+  return Object.entries(DATA.combos)
+    .map(([k, c]) => ({ key: k, ...c }))
+    .filter(c => state.dest === "all" || destOf(c) === state.dest)
+    .filter(c => DATA.config.holidays.some(h => h.id === c.holiday))
+    .filter(c => state.holiday === "all" || c.holiday === state.holiday);
+}
+
+function renderMeta(){
+  const r = DATA.last_run;
+  document.getElementById("meta").innerHTML =
+    `Son tarama <b>${ago(r.at)}</b> · ${new Date(r.at).toLocaleString("tr-TR", {dateStyle:"medium", timeStyle:"short"})}<br>${r.ok}/${r.total} kombinasyon güncellendi${r.stale ? ` (${r.stale} tanesi eski fiyatla)` : ""} · toplam ${DATA.runs.length} tarama`;
+}
+
+function renderCards(){
+  const all = combos();
+  const best = kind => all.filter(c => priceOf(c, kind)).sort((a, b) => priceOf(a, kind) - priceOf(b, kind))[0];
+  const bd = best("direct"), bc = best("conn");
+  const th = DATA.config.connecting_threshold;
+  const under = all.filter(c => (c.connecting || []).some(o => o && o.price <= th));
+  const card = (dot, lbl, val, sub, key) =>
+    `<div class="card" ${key ? `style="cursor:pointer" onclick="select('${key}')"` : ""}><div class="lbl"><span class="dot" style="background:${dot}"></span>${lbl}</div><div class="val">${val}</div><div class="sub">${sub}</div></div>`;
+  document.getElementById("cards").innerHTML =
+    card("var(--direct)", "En ucuz aktarmasız", bd ? TL(bd.direct.price) : "—",
+      bd ? `${destName(destOf(bd))} · ${fmtD(bd.dep)} – ${fmtD(bd.ret)} · ${bd.days} gün ${chgHtml(change(bd, "direct"))}` : "Bulunamadı", bd && bd.key) +
+    card("var(--conn)", "En ucuz tek aktarmalı", bc ? TL(bc.connecting[0].price) : "—",
+      bc ? `${destName(destOf(bc))} · ${fmtD(bc.dep)} – ${fmtD(bc.ret)} · ${bc.connecting[0].airlines.join(", ")} · ${bc.connecting[0].via.join(", ")}` : "Bulunamadı", bc && bc.key) +
+    card("var(--good)", `${th.toLocaleString("tr-TR")} TL altı aktarmalı`, under.length,
+      under.length ? `${under.length} kombinasyonda var` : "Henüz yok, takipteyiz", under[0] && under[0].key);
+}
+
+function color(p, min, max){
+  if (p == null) return null;
+  const t = max === min ? 0 : (p - min) / (max - min);
+  return `var(--h${Math.min(4, Math.floor(t * 5))})`;
+}
+
+function renderHeat(){
+  const holidays = DATA.config.holidays.filter(h => state.holiday === "all" || h.id === state.holiday);
+  const { min_days, max_days } = DATA.config;
+  const all = combos(), prices = all.map(c => priceOf(c, state.kind)).filter(Boolean);
+  const min = Math.min(...prices), max = Math.max(...prices);
+  const lens = []; for (let i = min_days; i <= max_days; i++) lens.push(i);
+  document.getElementById("heat").innerHTML = holidays.map(h => {
+    const cs = all.filter(c => c.holiday === h.id);
+    const deps = [...new Set(cs.map(c => c.dep))].sort();
+    const rows = deps.map(dep => `<tr><th class="row"><span class="lg">${fmtDw(dep)}</span><span class="sm">${fmtD(dep)}</span></th>` + lens.map(n => {
+      // Birden çok havalimanı seçiliyse aynı tarih için en ucuzunu göster
+      const cands = cs.filter(c => c.dep === dep && c.days === n);
+      const c = cands.filter(c => priceOf(c, state.kind)).sort((a, b) => priceOf(a, state.kind) - priceOf(b, state.kind))[0] || cands[0];
+      if (!c) return `<td class="empty"></td>`;
+      const p = priceOf(c, state.kind);
+      if (!p) return `<td class="na" onclick="select('${c.key}')" title="Sonuç yok">–</td>`;
+      const old = isStale(c, state.kind);
+      return `<td class="${old ? "old" : ""}" style="background:${color(p, min, max)}" onclick="select('${c.key}')" title="${destName(destOf(c))} · ${fmtD(c.dep)} – ${fmtD(c.ret)} · ${TL(p)}${old ? " · son bilinen fiyat" : ""}">${Math.round(p / 1000)}k</td>`;
+    }).join("") + `</tr>`).join("");
+    return `<div class="card"><div style="font-weight:600;margin-bottom:2px">${h.name}</div><div class="hint" style="margin-bottom:8px">${h.note}</div>
+      <table><thead><tr><th class="row">Gidiş</th>${lens.map(n => `<th>${n}g</th>`).join("")}</tr></thead><tbody>${rows}</tbody></table></div>`;
+  }).join("");
+}
+
+function spark(c, kind){
+  const h = c.history.filter(p => p[col(kind)] != null);
+  if (h.length < 2) return "";
+  const ys = h.map(p => p[col(kind)]), lo = Math.min(...ys), hi = Math.max(...ys);
+  const pts = ys.map((y, i) => `${(i / (ys.length - 1)) * 64},${hi === lo ? 9 : 16 - ((y - lo) / (hi - lo)) * 14}`).join(" ");
+  const stroke = ys[ys.length - 1] < ys[0] ? "var(--good)" : ys[ys.length - 1] > ys[0] ? "var(--bad)" : "var(--ink3)";
+  return `<svg width="64" height="18"><polyline points="${pts}" fill="none" stroke="${stroke}" stroke-width="1.5"/></svg>`;
+}
+
+const SORTS = {
+  "d-asc": [c => priceOf(c, "direct"), 1], "d-desc": [c => priceOf(c, "direct"), -1],
+  "c-asc": [c => priceOf(c, "conn"), 1], "c-desc": [c => priceOf(c, "conn"), -1],
+  "date": [c => d(c.dep).getTime() + c.days, 1], "days": [c => c.days * 1e13 + d(c.dep).getTime(), 1],
+};
+const SORT_LABEL = { "d-asc": "aktarmasız fiyata göre (ucuz → pahalı)", "d-desc": "aktarmasız fiyata göre (pahalı → ucuz)",
+  "c-asc": "aktarmalı fiyata göre (ucuz → pahalı)", "c-desc": "aktarmalı fiyata göre (pahalı → ucuz)",
+  "date": "gidiş tarihine göre", "days": "gün sayısına göre" };
+
+function listRows(){
+  const maxd = Number(LIST.maxd) || null, maxc = Number(LIST.maxc) || null, days = Number(LIST.days) || null;
+  const [key, dir] = SORTS[LIST.sort] || SORTS["d-asc"];
+  return combos()
+    .filter(c => !maxd || (priceOf(c, "direct") && priceOf(c, "direct") <= maxd))
+    .filter(c => !maxc || (priceOf(c, "conn") && priceOf(c, "conn") <= maxc))
+    .filter(c => !days || c.days === days)
+    // Fiyatı olmayanlar her zaman sona
+    .sort((a, b) => { const x = key(a), y = key(b); if (x == null) return 1; if (y == null) return -1; return (x - y) * dir; });
+}
+
+function headBtn(label, asc, desc){
+  const on = LIST.sort === asc || LIST.sort === desc;
+  const arrow = LIST.sort === asc ? " ↑" : LIST.sort === desc ? " ↓" : "";
+  const next = LIST.sort === asc && desc ? desc : asc;
+  return `<button class="${on ? "on" : ""}" onclick="setSort('${next}')" title="Sırala">${label}${arrow}</button>`;
+}
+
+function renderList(){
+  const th = DATA.config.connecting_threshold;
+  const all = combos().length;
+  const cs = listRows();
+  const shown = state.showAll ? cs : cs.slice(0, 20);
+  const k = LIST.sort.startsWith("c") ? "conn" : "direct";
+  const filtered = cs.length !== all;
+  document.getElementById("list-hint").textContent =
+    `${filtered ? `${all} kombinasyondan ${cs.length} tanesi gösteriliyor` : `${all} kombinasyon`}, ${SORT_LABEL[LIST.sort]} sıralı.`;
+  document.getElementById("list").innerHTML =
+    `<div class="row head"><span>${headBtn("Tarihler", "date")}</span><span>${headBtn("Aktarmasız", "d-asc", "d-desc")}</span><span>${headBtn("Tek aktarmalı", "c-asc", "c-desc")}</span><span class="spark">Eğilim</span></div>` +
+    (cs.length ? "" : `<div class="empty-state">Bu filtrelere uyan kombinasyon yok. Fiyat sınırını yükseltmeyi dene.</div>`) +
+    shown.map(c => {
+      const cn = c.connecting && c.connecting[0];
+      return `<div class="row ${state.selected === c.key ? "sel" : ""}" onclick="select('${c.key}')">
+        <span><div class="d1">${fmtD(c.dep)} – ${fmtD(c.ret)}</div><div class="d2">${destOf(c)} · ${c.days} gün · ${c.holiday.startsWith("ramazan") ? "Ramazan" : "Kurban"}</div></span>
+        <span><span class="price">${TL(c.direct && c.direct.price)}</span>${chgHtml(change(c, "direct"))}${badges(c, "direct")}</span>
+        <span><span class="price">${TL(cn && cn.price)}</span>${chgHtml(change(c, "conn"))}${cn && cn.price <= th ? `<span class="tag">40k altı</span>` : ""}${badges(c, "conn")}
+          <div class="d2">${cn ? cn.airlines.join(", ") + " · " + cn.via.join(", ") : ""}</div>${cn && cn.minutes ? `<div class="d2">${cn.ret_minutes ? "Gidiş " : ""}${hm(cn.minutes)}${cn.ret_minutes ? ` · Dönüş ${hm(cn.ret_minutes)}` : ""}</div>` : ""}</span>
+        <span class="spark">${spark(c, k)}</span></div>`;
+    }).join("") +
+    (cs.length > 20 ? `<button class="more" onclick="state.showAll=!state.showAll;renderList()">${state.showAll ? "Daha az göster" : `Tümünü göster (${cs.length})`}</button>` : "");
+}
+
+function saveList(){ store.set("list", JSON.stringify(LIST)); }
+function setSort(v){ LIST.sort = v; document.getElementById("f-sort").value = v; saveList(); renderList(); }
+
+function setupListFilters(){
+  const { min_days, max_days } = DATA.config;
+  const days = document.getElementById("f-days");
+  for (let n = min_days; n <= max_days; n++) days.insertAdjacentHTML("beforeend", `<option value="${n}">${n} gün</option>`);
+  const fields = { sort: "f-sort", maxd: "f-maxd", maxc: "f-maxc", days: "f-days" };
+  for (const [k, id] of Object.entries(fields)) {
+    const el = document.getElementById(id);
+    el.value = LIST[k];
+    el.addEventListener("input", () => { LIST[k] = el.value; state.showAll = false; saveList(); renderList(); });
+  }
+  document.getElementById("f-reset").onclick = () => {
+    LIST = { sort: "d-asc", maxd: "", maxc: "", days: "" };
+    for (const [k, id] of Object.entries(fields)) document.getElementById(id).value = LIST[k];
+    saveList(); setHoliday("all");
+  };
+}
+
+function chart(c){
+  const avail = document.querySelector(".wrap").clientWidth - 66;
+  const W = avail > 0 ? Math.max(300, Math.min(1000, avail)) : 640, H = 200, P = { l: 56, r: 12, t: 12, b: 28 };
+  const series = [["direct", "var(--direct)"], ["conn", "var(--conn)"]].map(([k, color]) => ({
+    color, pts: c.history.filter(p => p[col(k)] != null).map(p => [new Date(DATA.runs[p[0]]).getTime(), p[col(k)]])
+  })).filter(s => s.pts.length);
+  if (!series.length) return "";
+  const now = new Date(DATA.runs[c.checked]).getTime();
+  series.forEach(s => s.pts.push([now, s.pts[s.pts.length - 1][1]]));
+  const xs = series.flatMap(s => s.pts.map(p => p[0])), ys = series.flatMap(s => s.pts.map(p => p[1]));
+  let x0 = Math.min(...xs), x1 = Math.max(...xs); if (x0 === x1) { x0 -= 3600e3; x1 += 3600e3; }
+  const pad = (Math.max(...ys) - Math.min(...ys)) * 0.1 || 2000;
+  const y0 = Math.min(...ys) - pad, y1 = Math.max(...ys) + pad;
+  const X = t => P.l + (t - x0) / (x1 - x0) * (W - P.l - P.r), Y = v => P.t + (1 - (v - y0) / (y1 - y0)) * (H - P.t - P.b);
+  const ticks = [0, .5, 1].map(f => y0 + f * (y1 - y0));
+  const step = s => s.pts.map((p, i) => (i ? `H${X(p[0])}V${Y(p[1])}` : `M${X(p[0])},${Y(p[1])}`)).join("");
+  return `<svg viewBox="0 0 ${W} ${H}" width="100%" role="img" aria-label="Fiyat geçmişi">
+    ${ticks.map(v => `<line x1="${P.l}" x2="${W - P.r}" y1="${Y(v)}" y2="${Y(v)}" stroke="var(--line)"/><text x="${P.l - 6}" y="${Y(v) + 4}" text-anchor="end">${Math.round(v / 1000)}k</text>`).join("")}
+    <text x="${P.l}" y="${H - 8}">${new Date(x0).toLocaleDateString("tr-TR")}</text>
+    <text x="${W - P.r}" y="${H - 8}" text-anchor="end">${new Date(x1).toLocaleDateString("tr-TR")}</text>
+    ${series.map(s => `<path d="${step(s)}" fill="none" stroke="${s.color}" stroke-width="2"/>` +
+      s.pts.slice(0, -1).map(p => `<circle cx="${X(p[0])}" cy="${Y(p[1])}" r="3" fill="${s.color}"><title>${TL(p[1])} · ${new Date(p[0]).toLocaleString("tr-TR")}</title></circle>`).join("")).join("")}
+  </svg>`;
+}
+
+const hm = m => `${Math.floor(m / 60)} sa${m % 60 ? ` ${m % 60} dk` : ""}`;
+function optHtml(o){
+  const legs = o.legs.map(l => `${l.from}${l.dep ? " " + l.dep : ""} → ${l.to}${l.arr ? " " + l.arr : ""}`).join(" · ");
+  const dur = o.minutes ? ` · ${hm(o.minutes)}` : "";
+  return `<div class="opt"><div class="top"><span>${o.airlines.join(", ")}${o.via.length ? " · " + o.via.join(", ") + " aktarmalı" : " · aktarmasız"}</span><span>${TL(o.price)}</span></div>
+    <div class="legs">Gidiş: ${legs}${dur}</div>${o.ret_minutes ? `<div class="legs">Dönüş (aynı havayolu, en kısa): ${hm(o.ret_minutes)}</div>` : ""}</div>`;
+}
+
+function renderDetail(){
+  const el = document.getElementById("detail");
+  const c = state.selected && DATA.combos[state.selected];
+  if (!c) { el.className = "card"; el.innerHTML = ""; return; }
+  el.className = "card on";
+  const th = DATA.config.connecting_threshold;
+  el.innerHTML = `<button class="close" onclick="select(null)">Kapat</button>
+    <h2>${destOf(c).includes("-") ? `IST → ${destOf(c).split("-")[0]}, ${destOf(c).split("-")[1]} → IST` : `IST ⇄ ${destName(destOf(c))}`} · ${fmtDw(c.dep)} → ${fmtDw(c.ret)} · ${c.days} gün</h2>
+    <p class="hint">${DATA.config.holidays.find(h => h.id === c.holiday).name} · son kontrol ${ago(DATA.runs[c.checked])}</p>
+    <div style="display:flex;gap:16px;font-size:12px;color:var(--ink2)"><span><span class="dot" style="background:var(--direct)"></span> Aktarmasız</span><span><span class="dot" style="background:var(--conn)"></span> En ucuz tek aktarmalı</span></div>
+    ${chart(c)}
+    <div class="det-grid">
+      <div><b>Aktarmasız</b> ${badges(c, "direct")}${c.direct ? optHtml(c.direct) : `<p class="hint">Bu tarihlerde aktarmasız sonuç yok.</p>`}
+        ${lowOf(c, "direct") ? `<p class="hint" style="margin-top:8px">Takip başladığından beri en düşük: ${TL(lowOf(c, "direct").low)}</p>` : ""}</div>
+      <div><b>Tek aktarmalı (en ucuz 3)</b> ${badges(c, "conn")}${(c.connecting || []).length ? c.connecting.map(optHtml).join("") : `<p class="hint">Sonuç yok.</p>`}
+        <p class="hint" style="margin-top:8px">${(c.connecting || []).some(o => o.price <= th) ? "40.000 TL altında seçenek var." : "40.000 TL altında seçenek yok."}${lowOf(c, "conn") ? ` Takip başladığından beri en düşük: ${TL(lowOf(c, "conn").low)}.` : ""}</p></div>
+    </div>
+    <div class="links"><a href="${c.urls.direct}" target="_blank" rel="noopener">Aktarmasızları Google Flights'ta aç ↗</a><a href="${c.urls.connecting}" target="_blank" rel="noopener">Aktarmalıları Google Flights'ta aç ↗</a></div>`;
+}
+
+function select(key){
+  state.selected = key;
+  renderDetail(); renderList();
+  if (key) document.getElementById("detail").scrollIntoView({ behavior: "smooth", block: "start" });
+}
+
+let resizeT; window.addEventListener("resize", () => { clearTimeout(resizeT); resizeT = setTimeout(renderDetail, 200); });
+
+function renderAll(){ renderCards(); renderHeat(); renderList(); renderDetail(); }
+
+function setupFilters(){
+  const hs = [["all", "Tümü"], ...DATA.config.holidays.map(h => [h.id, h.name.replace(/ Bayramı \d+/, "")])];
+  const el = document.getElementById("f-holiday");
+  el.innerHTML = hs.map(([v, n]) => `<button data-v="${v}" aria-pressed="${v === state.holiday}">${n}</button>`).join("");
+  const sel = document.getElementById("f-hol");
+  sel.innerHTML = hs.map(([v, n]) => `<option value="${v}">${n}</option>`).join("");
+  sel.value = state.holiday;
+  window.setHoliday = v => {
+    state.holiday = v; state.showAll = false;
+    el.querySelectorAll("button").forEach(b => b.setAttribute("aria-pressed", b.dataset.v === v));
+    sel.value = v; renderAll();
+  };
+  el.onclick = e => { const v = e.target.dataset.v; if (v) setHoliday(v); };
+  sel.addEventListener("input", () => setHoliday(sel.value));
+  const ds = [["all", "Tümü"], ...(DATA.config.destinations || [{ code: "HND", name: "Tokyo Haneda" }]).map(x => [x.code, x.name])];
+  const de = document.getElementById("f-dest");
+  de.innerHTML = ds.map(([v, n]) => `<button data-v="${v}" aria-pressed="${v === state.dest}" title="${n}">${v === "all" ? n : v}</button>`).join("");
+  de.onclick = e => { const v = e.target.dataset.v; if (!v) return; state.dest = v; state.showAll = false;
+    de.querySelectorAll("button").forEach(b => b.setAttribute("aria-pressed", b.dataset.v === v)); renderAll(); };
+  const k = document.getElementById("f-kind");
+  k.onclick = e => { const v = e.target.dataset.v; if (!v) return; state.kind = v; k.querySelectorAll("button").forEach(b => b.setAttribute("aria-pressed", b.dataset.v === v));
+    LIST.sort = v === "direct" ? "d-asc" : "c-asc"; document.getElementById("f-sort").value = LIST.sort; saveList(); renderAll(); };
+}
+
+fetch("data.json", { cache: "no-store" }).then(r => r.json()).then(j => {
+  DATA = j; setupFilters(); setupListFilters(); renderMeta(); renderAll();
+}).catch(() => {
+  document.getElementById("meta").textContent = "";
+  document.getElementById("list").innerHTML = `<div class="empty-state">Henüz veri yok. İlk tarama tamamlanınca burada görünecek.</div>`;
+});
+</script>
+</body>
+</html>
