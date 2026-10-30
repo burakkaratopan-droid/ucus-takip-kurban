@@ -12,22 +12,6 @@
     {
       "code": "KIX",
       "name": "Osaka Kansai"
-    },
-    {
-      "code": "HND-NRT",
-      "name": "Haneda gidiş, Narita dönüş"
-    },
-    {
-      "code": "HND-KIX",
-      "name": "Haneda gidiş, Kansai dönüş"
-    },
-    {
-      "code": "NRT-KIX",
-      "name": "Narita gidiş, Kansai dönüş"
-    },
-    {
-      "code": "NRT-HND",
-      "name": "Narita gidiş, Haneda dönüş"
     }
   ],
   "currency": "TRY",
