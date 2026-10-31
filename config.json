@@ -16,7 +16,7 @@
   ],
   "currency": "TRY",
   "adults": 1,
-  "max_connecting_hours": 18,
+  "max_connecting_hours": 24,
   "min_days": 10,
   "max_days": 15,
   "connecting_threshold": 40000,
